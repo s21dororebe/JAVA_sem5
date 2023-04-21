@@ -7,7 +7,7 @@ public class Product {
     private float price;
     private int quantity;
     private long id;
-    private long idCounter = 0;
+    private static long idCounter = 1;
 
     public String getTitle() {
         return title;
@@ -49,11 +49,18 @@ public class Product {
         this.id = idCounter++;
     }
 
-    public Product(String title, String description, float price, int quantity, long id) {
+    public Product(String title, String description, float price, int quantity) {
+        setId();
         this.title = title;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.id = id;
+    }
+    public Product() {}
+    @Override
+    public String toString() {
+        return "Product [title=" + title + ", description=" + description + ", price=" + price + ", quantity="
+                + quantity + ", id=" + id + "]";
     }
 }
