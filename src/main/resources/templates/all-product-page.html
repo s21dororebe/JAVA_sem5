@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of products</title>
+</head>
+<body>
+<table>
+    <th:block th:each="temp : ${packet}">
+        <tr>
+            <td th:text="${temp.getId()}"></td>
+            <td th:text="${temp.getTitle()}"></td>
+            <td th:text="${temp.getDescription()}"></td>
+            <td th:text="${temp.getPrice() + ' eur'}"></td>
+            <td th:text="${temp.getQuantity()} + 'x'"></td>
+        </tr>
+    </th:block>
+</table>
+
+</body>
+</html>
