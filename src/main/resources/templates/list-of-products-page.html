@@ -11,8 +11,8 @@
             <td th:text="${temp.getId()}"></td>
             <td th:text="${temp.getTitle()}"></td>
             <td th:text="${temp.getDescription()}"></td>
-            <td th:text="${temp.getPrice()}"></td>
-            <td th:text="${temp.getQuantity()}"></td>
+            <td th:text="${temp.getPrice() + ' eur'}"></td>
+            <td th:text="${temp.getQuantity()} + 'x'"></td>
         </tr>
     </th:block>
 </table>
