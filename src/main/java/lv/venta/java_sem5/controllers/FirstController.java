@@ -4,6 +4,7 @@ import lv.venta.java_sem5.model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -51,9 +52,25 @@ public class FirstController {
                 }
             }
         }
-        model.addAttribute("packet-error", "Wrong id");
+        model.addAttribute("packetError", "Wrong id");
         return "error-page";
     }
+
+    @GetMapping("/list-of-products/{id}") //localhost:8080/list-of-products/2
+    public String getProductByPage(@PathVariable("id") long id, Model model){
+        if(id > 0) {
+            for(Product temp : listOfProducts){
+                if(temp.getId() == id){
+                    model.addAttribute("packet", temp);
+                    return "one-product-page";
+                }
+            }
+        }
+        model.addAttribute("packetError", "Wrong id");
+        return "error-page";
+    }
+
+
 
 
 
