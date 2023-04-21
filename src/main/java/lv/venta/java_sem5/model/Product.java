@@ -55,9 +55,8 @@ public class Product {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.id = id;
     }
-    public Product() {}
+    public Product() { setId(); }
     @Override
     public String toString() {
         return "Product [title=" + title + ", description=" + description + ", price=" + price + ", quantity="
