@@ -84,8 +84,6 @@ public class FirstController {
         return "redirect:/list-of-products";
     }
 
-    //TODO delete
-
     @GetMapping("/update-product/{id}") //localhost:8080/update-product/1
     public String getUpdateProduct(@PathVariable("id") long id, Model model){
         if(id > 0){
@@ -102,7 +100,7 @@ public class FirstController {
     @PostMapping("/update-product/{id}")
     public String postUpdateProduct(@PathVariable("id") long id, Product product){
         for(Product temp : listOfProducts){
-            if(temp.getId() == product.getId()){
+            if(temp.getId() == id){
                 temp.setTitle(product.getTitle());
                 temp.setDescription(product.getDescription());
                 temp.setPrice(product.getPrice());
