@@ -90,7 +90,7 @@ public class FirstController {
             model.addAttribute("product", crudService.retrieveById(id));
             return "update-product-page";
         } catch (Exception e){
-            model.addAttribute("packetError", "Wrong id");
+            model.addAttribute("packetError", e.getMessage());
             return "error-page";
         }
     }
@@ -115,7 +115,7 @@ public class FirstController {
             model.addAttribute("product", crudService.retrieveAllProducts());
             return "all-product-page";
         } catch (Exception e){
-            model.addAttribute("packetError", "Wrong id");
+            model.addAttribute("packetError", e.getMessage());
             return "error-page";
         }
     }
