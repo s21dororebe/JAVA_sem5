@@ -1,6 +1,8 @@
 package lv.venta.java_sem5.controllers;
 
 import lv.venta.java_sem5.model.Product;
+import lv.venta.java_sem5.services.ICRUDProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +16,8 @@ import java.util.List;
 @Controller
 public class FirstController {
 
-    private final ArrayList<Product> listOfProducts = new ArrayList<>(List.of(new Product ("Apple", "delicious", 1.20f, 5), new Product ("Orange", "orange", 0.52f, 60), new Product("Banana", "yellow", 1.29f, 20)));
-
+    @Autowired
+    private ICRUDProductService crudService;
 
     @GetMapping("/hello") //localhost:8080/hello
     public String getHello(){
@@ -39,14 +41,14 @@ public class FirstController {
 
     @GetMapping("/list-of-products") //localhost:8080/list-of-products
     public String getListOfProducts(Model model){
-        model.addAttribute("packet", listOfProducts); //I put a list of products into the box
+        model.addAttribute("packet", crudService.retrieveAllProducts()); //I put a list of products into the box
         return "list-of-products-page"; //I return page to show user the data
     }
 
     @GetMapping("/list-of-products-find") //localhost:8080/list-of-products-find?id=2
     public String getProductByID(@RequestParam("id") long id, Model model){
         if(id > 0) {
-            for(Product temp : listOfProducts){
+            for(Product temp : crudService.retrieveAllProducts()){
                 if(temp.getId() == id){
                     model.addAttribute("packet", temp);
                     return "one-product-page";
@@ -60,7 +62,7 @@ public class FirstController {
     @GetMapping("/list-of-products/{id}") //localhost:8080/list-of-products/2
     public String getProductByPage(@PathVariable("id") long id, Model model){
         if(id > 0) {
-            for(Product temp : listOfProducts){
+            for(Product temp : crudService.retrieveAllProducts()){
                 if(temp.getId() == id){
                     model.addAttribute("packet", temp);
                     return "one-product-page";
@@ -80,14 +82,14 @@ public class FirstController {
     public String postAddProduct(Product product){
         //TODO verify if this product already exists
         Product temp = new Product(product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
-        listOfProducts.add(temp);
+        crudService.retrieveAllProducts().add(temp);
         return "redirect:/list-of-products";
     }
 
     @GetMapping("/update-product/{id}") //localhost:8080/update-product/1
     public String getUpdateProduct(@PathVariable("id") long id, Model model){
         if(id > 0){
-            for(Product temp : listOfProducts){
+            for(Product temp : crudService.retrieveAllProducts()){
                 if(temp.getId() == id){
                     model.addAttribute("product", temp);
                     return "update-product-page";
@@ -99,7 +101,7 @@ public class FirstController {
     }
     @PostMapping("/update-product/{id}")
     public String postUpdateProduct(@PathVariable("id") long id, Product product){
-        for(Product temp : listOfProducts){
+        for(Product temp : crudService.retrieveAllProducts()){
             if(temp.getId() == id){
                 temp.setTitle(product.getTitle());
                 temp.setDescription(product.getDescription());
@@ -119,10 +121,10 @@ public class FirstController {
     @GetMapping("/delete-product/{id}") //localhost:8080/delete-product/1
     public String getDeleteProduct(@PathVariable("id") long id, Model model){
         if(id > 0){
-            for(Product temp : listOfProducts){
+            for(Product temp : crudService.retrieveAllProducts()){
                 if(temp.getId() == id){
-                    listOfProducts.remove(temp);
-                    model.addAttribute("product", listOfProducts);
+                    crudService.retrieveAllProducts().remove(temp);
+                    model.addAttribute("product", crudService.retrieveAllProducts());
                     return "all-product-page";
                 }
             }
