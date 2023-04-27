@@ -69,17 +69,6 @@ public class CRUDProductServiceImpl implements ICRUDProductService {
 
     @Override
     public void deleteById(long id) throws Exception {
-        if(id > 0){
-            boolean isFound = false;
-            for(Product temp : allProducts){
-                if(temp.getId() == id){
-                    allProducts.remove(temp);
-                    temp = null;
-                    isFound = true;
-                    break;
-                }
-            }
-            if(!isFound) throw new Exception("Product not found");
-        } else throw new Exception("Invalid product id");
+        allProducts.remove(retrieveById(id));
     }
 }
