@@ -46,31 +46,27 @@ public class FirstController {
     }
 
     @GetMapping("/list-of-products-find") //localhost:8080/list-of-products-find?id=2
-    public String getProductByID(@RequestParam("id") long id, Model model){
-        if(id > 0) {
-            for(Product temp : crudService.retrieveAllProducts()){
-                if(temp.getId() == id){
-                    model.addAttribute("packet", temp);
-                    return "one-product-page";
-                }
-            }
+    public String getProductByID(@RequestParam("id") long id, Model model) {
+        try {
+            Product prod = crudService.retrieveById(id);
+            model.addAttribute("packet", prod);
+            return "one-product-page";
+        } catch (Exception e){
+            model.addAttribute("packetError", e.getMessage());
+            return "error-page";
         }
-        model.addAttribute("packetError", "Wrong id");
-        return "error-page";
     }
 
     @GetMapping("/list-of-products/{id}") //localhost:8080/list-of-products/2
     public String getProductByPage(@PathVariable("id") long id, Model model){
-        if(id > 0) {
-            for(Product temp : crudService.retrieveAllProducts()){
-                if(temp.getId() == id){
-                    model.addAttribute("packet", temp);
-                    return "one-product-page";
-                }
-            }
+        try {
+            Product prod = crudService.retrieveById(id);
+            model.addAttribute("packet", prod);
+            return "one-product-page";
+        } catch (Exception e){
+            model.addAttribute("packetError", e.getMessage());
+            return "error-page";
         }
-        model.addAttribute("packetError", "Wrong id");
-        return "error-page";
     }
 
     @GetMapping("/add-product") //localhost:8080/add-product
@@ -79,39 +75,33 @@ public class FirstController {
         return "add-product-page";
     }
     @PostMapping("/add-product")
-    public String postAddProduct(Product product){
-        //TODO verify if this product already exists
-        Product temp = new Product(product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
-        crudService.retrieveAllProducts().add(temp);
-        return "redirect:/list-of-products";
+    public String postAddProduct(Product product) {
+        try {
+            crudService.addNewProduct(product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
+            return "redirect:/list-of-products";
+        } catch (Exception e){
+            return "redirect:/error";
+        }
     }
 
     @GetMapping("/update-product/{id}") //localhost:8080/update-product/1
     public String getUpdateProduct(@PathVariable("id") long id, Model model){
-        if(id > 0){
-            for(Product temp : crudService.retrieveAllProducts()){
-                if(temp.getId() == id){
-                    model.addAttribute("product", temp);
-                    return "update-product-page";
-                }
-            }
+        try {
+            model.addAttribute("product", crudService.retrieveById(id));
+            return "update-product-page";
+        } catch (Exception e){
+            model.addAttribute("packetError", "Wrong id");
+            return "error-page";
         }
-        model.addAttribute("packetError", "Wrong id");
-        return "error-page";
     }
     @PostMapping("/update-product/{id}")
     public String postUpdateProduct(@PathVariable("id") long id, Product product){
-        for(Product temp : crudService.retrieveAllProducts()){
-            if(temp.getId() == id){
-                temp.setTitle(product.getTitle());
-                temp.setDescription(product.getDescription());
-                temp.setPrice(product.getPrice());
-                temp.setQuantity(product.getQuantity());
-
-                return "redirect:/list-of-products/" + id;
-            }
+        try {
+            crudService.update(id, product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
+            return "redirect:/list-of-products/" + id;
+        } catch (Exception e){
+            return "redirect:/error";
         }
-        return "redirect:/error";
     }
     @GetMapping("/error") //localhost:8080/error
     public String getError(Model model){
@@ -120,18 +110,13 @@ public class FirstController {
     }
     @GetMapping("/delete-product/{id}") //localhost:8080/delete-product/1
     public String getDeleteProduct(@PathVariable("id") long id, Model model){
-        if(id > 0){
-            for(Product temp : crudService.retrieveAllProducts()){
-                if(temp.getId() == id){
-                    crudService.retrieveAllProducts().remove(temp);
-                    model.addAttribute("product", crudService.retrieveAllProducts());
-                    return "all-product-page";
-                }
-            }
+        try {
+            crudService.deleteById(id);
+            model.addAttribute("product", crudService.retrieveAllProducts());
+            return "all-product-page";
+        } catch (Exception e){
+            model.addAttribute("packetError", "Wrong id");
+            return "error-page";
         }
-        model.addAttribute("packetError", "Wrong id");
-        return "error-page";
     }
-
-
 }
