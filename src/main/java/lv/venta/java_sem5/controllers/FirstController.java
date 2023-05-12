@@ -101,13 +101,18 @@ public class FirstController {
         }
     }
     @PostMapping("/update-product/{id}")
-    public String postUpdateProduct(@PathVariable("id") long id, Product product){
-        try {
-            crudService.update(id, product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
-            return "redirect:/list-of-products/" + id;
-        } catch (Exception e){
-            return "redirect:/error";
+    public String postUpdateProduct(@PathVariable("id") long id, @Valid Product product, BindingResult result){
+        if(!result.hasErrors()){
+            try {
+                crudService.update(id, product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
+                return "redirect:/list-of-products/" + id;
+            } catch (Exception e){
+                return "redirect:/error";
+            }
+        } else {
+            return "update-product-page";
         }
+
     }
     @GetMapping("/error") //localhost:8080/error
     public String getError(Model model){

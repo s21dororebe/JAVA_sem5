@@ -5,12 +5,12 @@ import jakarta.validation.constraints.*;
 public class Product {
     @NotNull
     @Size(min=3, max=150)
-    @Pattern(regexp ="[A-Z]{1}[a-z\\ ]+")
+    @Pattern(regexp ="[A-Z]{1}[a-z\\ ]+", message = "1.burtam jabut lielam un tikai latinu burti")
     private String title;
 
     @NotNull
     @Size(min=5, max=400)
-    @Pattern(regexp ="[A-Z]{1}[a-z0-9\\ ]+")
+    @Pattern(regexp ="[A-Z]{1}[a-z0-9\\ ]+", message = "1.burtam jabut lielam un tikai latinu burti")
     private String description;
 
     @Min(0)
