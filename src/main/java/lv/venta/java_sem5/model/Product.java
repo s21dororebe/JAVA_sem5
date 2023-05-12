@@ -1,9 +1,8 @@
 package lv.venta.java_sem5.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
+
 
 @Table(name="product_table")
 @Entity
