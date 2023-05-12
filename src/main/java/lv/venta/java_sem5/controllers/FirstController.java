@@ -1,10 +1,12 @@
 package lv.venta.java_sem5.controllers;
 
+import jakarta.validation.Valid;
 import lv.venta.java_sem5.model.Product;
 import lv.venta.java_sem5.services.ICRUDProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,12 +77,16 @@ public class FirstController {
         return "add-product-page";
     }
     @PostMapping("/add-product")
-    public String postAddProduct(Product product) {
-        try {
-            crudService.addNewProduct(product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
-            return "redirect:/list-of-products";
-        } catch (Exception e){
-            return "redirect:/error";
+    public String postAddProduct(@Valid Product product, BindingResult result) {
+        if(!result.hasErrors()){
+            try {
+                crudService.addNewProduct(product.getTitle(), product.getDescription(), product.getPrice(), product.getQuantity());
+                return "redirect:/list-of-products";
+            } catch (Exception e){
+                return "redirect:/error";
+            }
+        } else {
+            return "add-product-page";
         }
     }
 
