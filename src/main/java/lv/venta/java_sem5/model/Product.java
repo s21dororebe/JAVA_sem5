@@ -1,11 +1,26 @@
 package lv.venta.java_sem5.model;
 
-public class Product {
+import jakarta.validation.constraints.*;
 
+public class Product {
+    @NotNull
+    @Size(min=3, max=150)
+    @Pattern(regexp ="[A-Z]{1}[a-z\\ ]+")
     private String title;
+
+    @NotNull
+    @Size(min=5, max=400)
+    @Pattern(regexp ="[A-Z]{1}[a-z0-9\\ ]+")
     private String description;
+
+    @Min(0)
+    @Max(1000)
     private float price;
+
+    @Min(0)
+    @Max(1000000)
     private int quantity;
+
     private long id;
     private static long idCounter = 1;
 
