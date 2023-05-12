@@ -1,28 +1,40 @@
 package lv.venta.java_sem5.model;
 
 import jakarta.validation.constraints.*;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
 
+@Table(name="product_table")
+@Entity
 public class Product {
+
+    @Column(name="Title")
     @NotNull
     @Size(min=3, max=150)
     @Pattern(regexp ="[A-Z]{1}[a-z\\ ]+", message = "1.burtam jabut lielam un tikai latinu burti")
     private String title;
 
+    @Column(name="Description")
     @NotNull
     @Size(min=5, max=400)
     @Pattern(regexp ="[A-Z]{1}[a-z0-9\\ ]+", message = "1.burtam jabut lielam un tikai latinu burti")
     private String description;
 
+    @Column(name="Price")
     @Min(0)
     @Max(1000)
     private float price;
 
+    @Column(name="Quantity")
     @Min(0)
     @Max(1000000)
     private int quantity;
 
+    @Column(name="id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private static long idCounter = 1;
 
     public String getTitle() {
         return title;
@@ -60,12 +72,8 @@ public class Product {
         return id;
     }
 
-    public void setId() {
-        this.id = idCounter++;
-    }
 
     public Product(String title, String description, float price, int quantity) {
-        setId();
         this.title = title;
         this.description = description;
         this.price = price;
